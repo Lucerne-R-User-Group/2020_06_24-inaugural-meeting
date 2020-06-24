@@ -1,0 +1,79 @@
+---
+title: "Introduction to tidyverse: rmarkdown and piping"
+author: "Andrea De Angelis"
+date: "6/24/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## R Markdown
+
+This is an R Markdown document (or notebook). Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+# Meet the pipe operator %>%
+
+The pipe operator ` %>% ` allows you to link together multiple dplyr operations.
+You can type the pipe %>%  using the following shortcut: `Ctrl + Shift + m` [Windows] or `Cmd + Shift + m` [Mac OS].
+
+Using the pipe operator you will not have to assign the outcome of each step to a new object.
+
+Consider the following scenario where we want to: 
+
+1. keep only certain variables, **then** 
+2. filter to keep only certain cars, **then**
+3. take the log of `hwy`
+
+The standard code (without pipe) would be:
+
+```{r}
+mpg_rec1 <- select(mpg, displ, hwy, year)
+mpg_rec2 <- filter(mpg_rec1, year == 1999)
+mpg_rec3 <- mutate(mpg_rec2, hwy_log = log(hwy))
+```
+
+This way, we are creating a data object at every step, making the code hard to read. 
+
+The pipe allows us to avoid this. In order to use the pipe, we need to **start with the data** and then add a pipe at each subsequent operation. 
+
+A good tip is to mentally read each pipe operator as "then". E.g. first I select, %>% (read: **"then"**) I filer, %>% (read: **"then"**) I mutate...
+
+Note that when you use the pipe, you can avid  setting the data argument for each function, as this is taken from the pipe automatically!
+
+```{r}
+mpg_rec <- mpg %>% 
+  select(displ, hwy, year) %>%     # note: the data argument is no longer set!
+  filter(year == 1999) %>% 
+  mutate(hwy_log = log(hwy))
+
+mpg_rec
+```
+
+Finally, note that you can insert plots directly in the pipe, but you will have to switch the pipe to a ggplot2's `+`:
+
+```{r}
+mpg_rec <- mpg %>% 
+  select(displ, hwy, year) %>%     # note: the data is no longer set!
+  filter(year == 1999) %>% 
+  mutate(hwy_log = log(hwy)) %>% 
+  ggplot() +     # <-- note  the `+`
+  geom_point(mapping = aes(x = displ, y = hwy_log))
+```
+
+You can learn more about how to use the pipe operator [here](https://r4ds.had.co.nz/transform.html#grouped-summaries-with-summarise) and [here](https://r4ds.had.co.nz/pipes.html).
+
+# Compiling an R Markdown notebook
+
+At this point, don't forget to click on the `Knit` button!
+RStudio will create an html file for you. You can open it with any browser, or by just clicking it.
+
+You can learn more about R Markdown [at this link](https://r4ds.had.co.nz/r-markdown.html).
