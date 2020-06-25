@@ -17,3 +17,7 @@ Schedule:
 19.00 - 19.30: "Making R accessible for sceptics" by Stella Bollmann
 
 19.30 - 20.00: "Introduction to Shiny" by Nicolas Attalides
+
+## Rules
+
+Please review our [code of conduct](https://github.com/Lucerne-R-User-Group/.github/blob/master/CODE_OF_CONDUCT.md) and our [contributing guidelines](https://github.com/Lucerne-R-User-Group/.github/blob/master/CONTRIBUTING.md). 
